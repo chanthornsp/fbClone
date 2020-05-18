@@ -9,12 +9,13 @@ use Tests\TestCase;
 class RetrievePostTest extends TestCase
 {
     use RefreshDatabase;
+
     /** @test */
     public function a_user_can_retrieve_post()
     {
         $this->withoutExceptionHandling();
         $this->actingAs($user = factory(\App\User::class)->create(), 'api');
-        $posts = factory(\App\Post::class, 2)->create(['user_id'=>$user->id]);
+        $posts = factory(\App\Post::class, 2)->create(['user_id' => $user->id]);
 
         $response = $this->get('api/posts');
         $response->assertStatus(200)
@@ -26,7 +27,8 @@ class RetrievePostTest extends TestCase
                             'post_id' => $posts->last()->id,
                             'attributes' => [
                                 'body' => $posts->last()->body,
-                            ]
+
+                                'posted_at' => $posts->last()->created_at->diffForHumans(),]
                         ]
                     ], [
                         'data' => [
@@ -34,6 +36,7 @@ class RetrievePostTest extends TestCase
                             'post_id' => $posts->first()->id,
                             'attributes' => [
                                 'body' => $posts->first()->body,
+                                'posted_at' => $posts->first()->created_at->diffForHumans(),
                             ]
                         ]
                     ]
@@ -43,18 +46,20 @@ class RetrievePostTest extends TestCase
                 ]
             ]);
     }
+
     /** @test */
-    public function a_user_can_only_restrieve_their_posts(){
+    public function a_user_can_only_restrieve_their_posts()
+    {
         $this->actingAs($user = factory(\App\User::class)->create(), 'api');
         $posts = factory(\App\Post::class)->create();
 
         $response = $this->get('api/posts');
         $response->assertStatus(200)
-        ->assertExactJson([
-            'data'=>[],
-            'links'=>[
-                'self'=>url('/posts')
-            ]
-        ]);
+            ->assertExactJson([
+                'data' => [],
+                'links' => [
+                    'self' => url('/posts')
+                ]
+            ]);
     }
 }
