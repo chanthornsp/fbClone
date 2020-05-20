@@ -14,8 +14,8 @@
                 <p>{{ post.data.attributes.body }}</p>
             </div>
         </div>
-        <div v-if="false" class="w-full  overflow-hidden">
-            <img class="w-full h-full object-cover object-top" src="/images/land.jpg">
+        <div v-if="post.data.attributes.image" class="w-full  overflow-hidden">
+            <img class="w-full h-full object-cover object-top" :src="'images/'+post.data.attributes.image">
         </div>
         <div class="px-4 flex justify-between text-gray-700 text-sm pt-2">
             <div class="flex">

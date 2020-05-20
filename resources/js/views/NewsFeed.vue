@@ -1,8 +1,8 @@
 <template>
     <div class="flex flex-col items-center py-4">
         <NewPost></NewPost>
-
-        <Post v-for="post in posts.data" :key="post.data.post_id" :post="post"></Post>
+        <p v-if="loading">loading post...</p>
+        <Post v-else v-for="post in posts.data" :key="post.data.post_id" :post="post"></Post>
 
     </div>
 </template>
@@ -19,16 +19,20 @@
         },
         data: () => {
             return {
-                posts: null,
+                // posts: null,
+                posts: [],
+                loading: true,
             }
         },
         mounted() {
             axios.get('/api/posts')
                 .then(res => {
                     this.posts = res.data;
+                    this.loading = false;
                 })
                 .catch(error => {
                     console.log('fail to get post');
+                    this.loading = false;
                 });
         }
     }

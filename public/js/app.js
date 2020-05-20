@@ -2186,7 +2186,9 @@ __webpack_require__.r(__webpack_exports__);
   },
   data: function data() {
     return {
-      posts: null
+      // posts: null,
+      posts: [],
+      loading: true
     };
   },
   mounted: function mounted() {
@@ -2194,8 +2196,10 @@ __webpack_require__.r(__webpack_exports__);
 
     axios.get('/api/posts').then(function (res) {
       _this.posts = res.data;
+      _this.loading = false;
     })["catch"](function (error) {
       console.log('fail to get post');
+      _this.loading = false;
     });
   }
 });
@@ -3051,8 +3055,13 @@ var render = function() {
         ])
       ]),
       _vm._v(" "),
-      false
-        ? undefined
+      _vm.post.data.attributes.image
+        ? _c("div", { staticClass: "w-full  overflow-hidden" }, [
+            _c("img", {
+              staticClass: "w-full h-full object-cover object-top",
+              attrs: { src: "images/" + _vm.post.data.attributes.image }
+            })
+          ])
         : _vm._e(),
       _vm._v(" "),
       _c(
@@ -3241,9 +3250,11 @@ var render = function() {
     [
       _c("NewPost"),
       _vm._v(" "),
-      _vm._l(_vm.posts.data, function(post) {
-        return _c("Post", { key: post.data.post_id, attrs: { post: post } })
-      })
+      _vm.loading
+        ? _c("p", [_vm._v("loading post...")])
+        : _vm._l(_vm.posts.data, function(post) {
+            return _c("Post", { key: post.data.post_id, attrs: { post: post } })
+          })
     ],
     2
   )
