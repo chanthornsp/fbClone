@@ -14,5 +14,4 @@ Route::middleware('auth:api')->group(function(){
         'users'=>'UserController',
     ]);
 
-
 });

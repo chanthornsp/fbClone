@@ -32,7 +32,7 @@
                     this.loading = false;
                 })
                 .catch(error => {
-                    console.log('fail to get post');
+                    console.log(error);
                     this.loading = false;
                 });
 

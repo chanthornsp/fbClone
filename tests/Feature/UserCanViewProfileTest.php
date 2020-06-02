@@ -11,24 +11,26 @@ class UserCanViewProfileTest extends TestCase
     use RefreshDatabase;
 
     /** @test */
-    public function a_user_can_view_user_profiles(){
+    public function a_user_can_view_user_profiles()
+    {
         $this->withoutExceptionHandling();
         $this->actingAs($user = factory(\App\User::class)->create(), 'api');
         $posts = factory(\App\Post::class)->create();
-        $response = $this->get('api/user/'.$user->id);
+        $response = $this->get('/api/users/'.$user->id);
 
         $response->assertStatus(200)
-                    ->json([
-                       'data'=>[
-                           'type'=>'users',
-                           'user_id'=>$user->id,
-                           'attributes'=>[
-                               'name'=>$user->name,
-                           ]
-                       ],
-                        'links'=>[
-                            'self'=>url('/users/'.$user->id)        ]
-                    ]);
+            ->assertJson([
+                'data' => [
+                    'type' => 'users',
+                    'user_id' => $user->id,
+                    'attributes' => [
+                        'name' => $user->name,
+                    ]
+                ],
+                'links' => [
+                    'self' => url('/users/'.$user->id),
+                ]
+            ]);
     }
 
 }
