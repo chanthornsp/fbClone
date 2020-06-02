@@ -34,6 +34,7 @@
                     console.log('fail to get post');
                     this.loading = false;
                 });
+
         }
     }
 </script>
